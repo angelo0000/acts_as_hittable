@@ -1,0 +1,35 @@
+ActsAsHittable
+===============
+
+This is a simple plugin to allow you to track any AR model. To use add the following line to your model:
+
+class SomeModel < ActiveRecord::Base
+  acts_as_hittable
+end
+
+
+Migration Needed
+
+class CreateHits < ActiveRecord::Migration
+  def self.up
+    create_table :hits do |t|
+      t.column :hittable_type, :string
+      t.column :hittable_id, :integer
+      t.timestamps
+    end
+        
+    add_index :hits, [:hittable_type, :hittable_id]
+  end
+
+  def self.down
+    drop_table :hits
+  end
+end
+
+Example
+=======
+model.hit - creates a new tracking for your object
+collection.hit - creates a new tracking for each object in collection
+model.hit_count - number of hits on model
+
+Copyright (c) 2008 Jake Dempsey, released under the MIT license
